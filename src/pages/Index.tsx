@@ -6,6 +6,8 @@ import { Badge } from '@/components/ui/badge';
 import Icon from '@/components/ui/icon';
 
 export default function Index() {
+  const [menuOpen, setMenuOpen] = useState(false);
+
   const handleDownload = () => {
     window.open('https://mcpehub.org/engine/dlfile.php?id=48823', '_blank');
   };
@@ -14,21 +16,31 @@ export default function Index() {
     const element = document.getElementById(id);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
+      setMenuOpen(false);
     }
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-white via-blue-50 to-cyan-50">
-      <nav className="fixed top-0 w-full bg-white bg-opacity-80 backdrop-blur-md border-b border-blue-100 z-50">
+      <nav className="fixed top-0 w-full bg-white bg-opacity-90 backdrop-blur-md border-b border-blue-100 z-50">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-cyan-400 rounded-lg flex items-center justify-center">
               <span className="text-white font-bold text-xl">VG</span>
             </div>
-            <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent">
+            <h1 className="text-xl md:text-2xl font-bold bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent">
               VisualGrand
             </h1>
           </div>
+          
+          <button 
+            className="md:hidden text-gray-700 p-2"
+            onClick={() => setMenuOpen(!menuOpen)}
+            aria-label="Меню"
+          >
+            <Icon name={menuOpen ? "X" : "Menu"} size={28} />
+          </button>
+
           <div className="hidden md:flex gap-6">
             <button onClick={() => scrollToSection('home')} className="text-gray-700 hover:text-blue-600 transition-colors font-medium">
               Главная
@@ -50,23 +62,48 @@ export default function Index() {
             </button>
           </div>
         </div>
+
+        {menuOpen && (
+          <div className="md:hidden bg-white border-t border-blue-100">
+            <div className="container mx-auto px-4 py-4 flex flex-col gap-4">
+              <button onClick={() => scrollToSection('home')} className="text-left text-gray-700 hover:text-blue-600 transition-colors font-medium py-2">
+                Главная
+              </button>
+              <button onClick={() => scrollToSection('download')} className="text-left text-gray-700 hover:text-blue-600 transition-colors font-medium py-2">
+                Скачать
+              </button>
+              <button onClick={() => scrollToSection('guide')} className="text-left text-gray-700 hover:text-blue-600 transition-colors font-medium py-2">
+                Инструкция
+              </button>
+              <button onClick={() => scrollToSection('faq')} className="text-left text-gray-700 hover:text-blue-600 transition-colors font-medium py-2">
+                FAQ
+              </button>
+              <button onClick={() => scrollToSection('updates')} className="text-left text-gray-700 hover:text-blue-600 transition-colors font-medium py-2">
+                Обновления
+              </button>
+              <button onClick={() => scrollToSection('support')} className="text-left text-gray-700 hover:text-blue-600 transition-colors font-medium py-2">
+                Поддержка
+              </button>
+            </div>
+          </div>
+        )}
       </nav>
 
-      <section id="home" className="pt-32 pb-20 px-4">
+      <section id="home" className="pt-24 pb-16 px-4">
         <div className="container mx-auto text-center">
-          <Badge className="mb-4 bg-blue-100 text-blue-700 hover:bg-blue-200">v2.5.0 — Новая версия</Badge>
-          <h2 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent">
+          <Badge className="mb-4 bg-blue-100 text-blue-700 hover:bg-blue-200 text-sm">v2.5.0 — Новая версия</Badge>
+          <h2 className="text-4xl md:text-7xl font-bold mb-4 md:mb-6 bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent">
             VisualGrand Client
           </h2>
-          <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+          <p className="text-base md:text-xl text-gray-600 mb-6 md:mb-8 max-w-2xl mx-auto px-4">
             Мощный чит-клиент для Minecraft с расширенными возможностями и простой установкой
           </p>
           <Button 
             size="lg" 
-            className="bg-gradient-to-r from-blue-500 to-cyan-400 hover:from-blue-600 hover:to-cyan-500 text-white px-8 py-6 text-lg rounded-xl shadow-lg transition-transform hover:scale-105"
+            className="bg-gradient-to-r from-blue-500 to-cyan-400 hover:from-blue-600 hover:to-cyan-500 text-white px-6 md:px-8 py-4 md:py-6 text-base md:text-lg rounded-xl shadow-lg transition-transform hover:scale-105"
             onClick={() => scrollToSection('download')}
           >
-            <Icon name="Download" className="mr-2" />
+            <Icon name="Download" className="mr-2" size={20} />
             Скачать клиент
           </Button>
         </div>
