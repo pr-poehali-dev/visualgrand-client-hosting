@@ -6,22 +6,8 @@ import { Badge } from '@/components/ui/badge';
 import Icon from '@/components/ui/icon';
 
 export default function Index() {
-  const [downloadedFile, setDownloadedFile] = useState<File | null>(null);
-
   const handleDownload = () => {
-    const link = document.createElement('a');
-    link.href = '/placeholder.svg';
-    link.download = 'visualgrand-client.apk';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    
-    const file = new File([''], 'visualgrand-client.apk', { type: 'application/vnd.android.package-archive' });
-    setDownloadedFile(file);
-  };
-
-  const openFileLocation = () => {
-    alert('Файл сохранён в папку Загрузки. Откройте файловый менеджер и перейдите в папку Downloads.');
+    window.open('https://mcpehub.org/engine/dlfile.php?id=48823', '_blank');
   };
 
   const scrollToSection = (id: string) => {
@@ -106,34 +92,14 @@ export default function Index() {
                 </div>
               </div>
               
-              {!downloadedFile ? (
-                <Button 
-                  onClick={handleDownload}
-                  className="w-full bg-gradient-to-r from-blue-500 to-cyan-400 hover:from-blue-600 hover:to-cyan-500 text-white py-6 text-lg rounded-xl"
-                  size="lg"
-                >
-                  <Icon name="Download" className="mr-2" size={24} />
-                  Загрузить файл (15.2 МБ)
-                </Button>
-              ) : (
-                <div className="space-y-3">
-                  <div className="p-4 bg-green-50 border-2 border-green-200 rounded-xl flex items-center gap-3">
-                    <Icon name="CheckCircle" className="text-green-600" size={24} />
-                    <div className="flex-1">
-                      <p className="font-semibold text-green-800">Файл загружен!</p>
-                      <p className="text-sm text-green-600">{downloadedFile.name}</p>
-                    </div>
-                  </div>
-                  <Button 
-                    onClick={openFileLocation}
-                    className="w-full bg-yellow-400 hover:bg-yellow-500 text-gray-900 py-6 text-lg rounded-xl font-semibold"
-                    size="lg"
-                  >
-                    <Icon name="FolderOpen" className="mr-2" size={24} />
-                    Открыть папку с файлом
-                  </Button>
-                </div>
-              )}
+              <Button 
+                onClick={handleDownload}
+                className="w-full bg-gradient-to-r from-blue-500 to-cyan-400 hover:from-blue-600 hover:to-cyan-500 text-white py-6 text-lg rounded-xl"
+                size="lg"
+              >
+                <Icon name="Download" className="mr-2" size={24} />
+                Скачать файл (откроется страница загрузки)
+              </Button>
             </CardContent>
           </Card>
         </div>
