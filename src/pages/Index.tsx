@@ -21,16 +21,19 @@ export default function Index() {
   };
 
   const openFileLocation = () => {
-    alert('Файл сохранён в папку "Загрузки". Откройте файловый менеджер и перейдите в папку Downloads.');
+    alert('Файл сохранён в папку Загрузки. Откройте файловый менеджер и перейдите в папку Downloads.');
   };
 
   const scrollToSection = (id: string) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-white via-blue-50 to-cyan-50">
-      <nav className="fixed top-0 w-full bg-white/80 backdrop-blur-md border-b border-blue-100 z-50">
+      <nav className="fixed top-0 w-full bg-white bg-opacity-80 backdrop-blur-md border-b border-blue-100 z-50">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-cyan-400 rounded-lg flex items-center justify-center">
@@ -64,7 +67,7 @@ export default function Index() {
       </nav>
 
       <section id="home" className="pt-32 pb-20 px-4">
-        <div className="container mx-auto text-center animate-fade-in">
+        <div className="container mx-auto text-center">
           <Badge className="mb-4 bg-blue-100 text-blue-700 hover:bg-blue-200">v2.5.0 — Новая версия</Badge>
           <h2 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent">
             VisualGrand Client
@@ -74,7 +77,7 @@ export default function Index() {
           </p>
           <Button 
             size="lg" 
-            className="bg-gradient-to-r from-blue-500 to-cyan-400 hover:from-blue-600 hover:to-cyan-500 text-white px-8 py-6 text-lg rounded-xl shadow-lg hover-scale"
+            className="bg-gradient-to-r from-blue-500 to-cyan-400 hover:from-blue-600 hover:to-cyan-500 text-white px-8 py-6 text-lg rounded-xl shadow-lg transition-transform hover:scale-105"
             onClick={() => scrollToSection('download')}
           >
             <Icon name="Download" className="mr-2" />
@@ -83,8 +86,8 @@ export default function Index() {
         </div>
       </section>
 
-      <section id="download" className="py-20 px-4 bg-white/50">
-        <div className="container mx-auto max-w-4xl animate-slide-up">
+      <section id="download" className="py-20 px-4 bg-white bg-opacity-50">
+        <div className="container mx-auto max-w-4xl">
           <h2 className="text-4xl font-bold text-center mb-12 text-gray-800">Скачать клиент</h2>
           <Card className="shadow-xl border-2 border-blue-100">
             <CardHeader className="bg-gradient-to-r from-blue-50 to-cyan-50">
@@ -140,7 +143,7 @@ export default function Index() {
         <div className="container mx-auto max-w-4xl">
           <h2 className="text-4xl font-bold text-center mb-12 text-gray-800">Инструкция по установке</h2>
           <div className="space-y-6">
-            <Card className="border-2 border-blue-100 hover-scale transition-all">
+            <Card className="border-2 border-blue-100 transition-all hover:scale-105">
               <CardHeader className="bg-gradient-to-r from-blue-50 to-cyan-50">
                 <div className="flex items-start gap-4">
                   <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-400 rounded-full flex items-center justify-center text-white font-bold text-xl flex-shrink-0">
@@ -148,13 +151,13 @@ export default function Index() {
                   </div>
                   <div>
                     <CardTitle className="text-xl">Скачайте файл клиента</CardTitle>
-                    <CardDescription className="mt-2">Нажмите на кнопку "Загрузить файл" выше</CardDescription>
+                    <CardDescription className="mt-2">Нажмите на кнопку Загрузить файл выше</CardDescription>
                   </div>
                 </div>
               </CardHeader>
             </Card>
 
-            <Card className="border-2 border-blue-100 hover-scale transition-all">
+            <Card className="border-2 border-blue-100 transition-all hover:scale-105">
               <CardHeader className="bg-gradient-to-r from-blue-50 to-cyan-50">
                 <div className="flex items-start gap-4">
                   <div className="w-12 h-12 bg-gradient-to-br from-yellow-400 to-yellow-500 rounded-full flex items-center justify-center text-gray-900 font-bold text-xl flex-shrink-0">
@@ -163,14 +166,14 @@ export default function Index() {
                   <div className="flex-1">
                     <CardTitle className="text-xl">Откройте файловый менеджер</CardTitle>
                     <CardDescription className="mt-2">
-                      Нажмите на жёлтую кнопку "Открыть папку с файлом" после загрузки
+                      Нажмите на жёлтую кнопку Открыть папку с файлом после загрузки
                     </CardDescription>
                   </div>
                 </div>
               </CardHeader>
             </Card>
 
-            <Card className="border-2 border-blue-100 hover-scale transition-all">
+            <Card className="border-2 border-blue-100 transition-all hover:scale-105">
               <CardHeader className="bg-gradient-to-r from-blue-50 to-cyan-50">
                 <div className="flex items-start gap-4">
                   <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-400 rounded-full flex items-center justify-center text-white font-bold text-xl flex-shrink-0">
@@ -189,7 +192,7 @@ export default function Index() {
               </CardHeader>
             </Card>
 
-            <Card className="border-2 border-blue-100 hover-scale transition-all">
+            <Card className="border-2 border-blue-100 transition-all hover:scale-105">
               <CardHeader className="bg-gradient-to-r from-blue-50 to-cyan-50">
                 <div className="flex items-start gap-4">
                   <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-400 rounded-full flex items-center justify-center text-white font-bold text-xl flex-shrink-0">
@@ -222,7 +225,7 @@ export default function Index() {
         </div>
       </section>
 
-      <section id="faq" className="py-20 px-4 bg-white/50">
+      <section id="faq" className="py-20 px-4 bg-white bg-opacity-50">
         <div className="container mx-auto max-w-4xl">
           <h2 className="text-4xl font-bold text-center mb-12 text-gray-800">Часто задаваемые вопросы</h2>
           <Accordion type="single" collapsible className="space-y-4">
@@ -282,7 +285,7 @@ export default function Index() {
         <div className="container mx-auto max-w-4xl">
           <h2 className="text-4xl font-bold text-center mb-12 text-gray-800">История обновлений</h2>
           <div className="space-y-6">
-            <Card className="border-2 border-blue-100 hover-scale transition-all">
+            <Card className="border-2 border-blue-100 transition-all hover:scale-105">
               <CardHeader className="bg-gradient-to-r from-blue-50 to-cyan-50">
                 <div className="flex items-center justify-between flex-wrap gap-2">
                   <CardTitle className="text-2xl">Версия 2.5.0</CardTitle>
@@ -357,11 +360,11 @@ export default function Index() {
         </div>
       </section>
 
-      <section id="support" className="py-20 px-4 bg-white/50">
+      <section id="support" className="py-20 px-4 bg-white bg-opacity-50">
         <div className="container mx-auto max-w-4xl">
           <h2 className="text-4xl font-bold text-center mb-12 text-gray-800">Техническая поддержка</h2>
           <div className="grid md:grid-cols-3 gap-6">
-            <Card className="border-2 border-blue-100 hover-scale transition-all text-center">
+            <Card className="border-2 border-blue-100 transition-all hover:scale-105 text-center">
               <CardHeader>
                 <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-cyan-400 rounded-full flex items-center justify-center mx-auto mb-4">
                   <Icon name="Mail" className="text-white" size={32} />
@@ -374,7 +377,7 @@ export default function Index() {
               </CardContent>
             </Card>
 
-            <Card className="border-2 border-blue-100 hover-scale transition-all text-center">
+            <Card className="border-2 border-blue-100 transition-all hover:scale-105 text-center">
               <CardHeader>
                 <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-cyan-400 rounded-full flex items-center justify-center mx-auto mb-4">
                   <Icon name="MessageCircle" className="text-white" size={32} />
@@ -387,7 +390,7 @@ export default function Index() {
               </CardContent>
             </Card>
 
-            <Card className="border-2 border-blue-100 hover-scale transition-all text-center">
+            <Card className="border-2 border-blue-100 transition-all hover:scale-105 text-center">
               <CardHeader>
                 <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-cyan-400 rounded-full flex items-center justify-center mx-auto mb-4">
                   <Icon name="Users" className="text-white" size={32} />
