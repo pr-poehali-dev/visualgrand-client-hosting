@@ -210,8 +210,7 @@ export default function Index() {
                 Какие возможности есть в клиенте?
               </AccordionTrigger>
               <AccordionContent className="text-gray-600">
-                VisualGrand включает расширенный ESP, Fly, Speed, Killaura, NoFall, X-Ray и множество других модулей 
-                для комфортной игры. Полный список функций доступен в документации.
+                VisualGrand включает только ESP (подсветка игроков и объектов через стены).
               </AccordionContent>
             </AccordionItem>
 
