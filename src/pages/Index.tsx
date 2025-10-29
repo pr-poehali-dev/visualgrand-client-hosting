@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
@@ -7,9 +7,74 @@ import Icon from '@/components/ui/icon';
 
 export default function Index() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [reviews, setReviews] = useState<any[]>([]);
+  const [downloadStats, setDownloadStats] = useState({ total: 0, unique: 0 });
+  const [reviewForm, setReviewForm] = useState({ rating: 5, comment: '' });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleDownload = () => {
+  useEffect(() => {
+    fetchReviews();
+    fetchDownloadStats();
+  }, []);
+
+  const fetchReviews = async () => {
+    try {
+      const response = await fetch('https://functions.poehali.dev/e6483b23-abad-4ab1-9385-92f3f56ce014');
+      const data = await response.json();
+      setReviews(data.slice(0, 5));
+    } catch (error) {
+      console.error('Error fetching reviews:', error);
+    }
+  };
+
+  const fetchDownloadStats = async () => {
+    try {
+      const response = await fetch('https://functions.poehali.dev/70f6b09d-3d7c-417b-8cfa-844c8bc17cd4?stats=true');
+      const data = await response.json();
+      if (data.length > 0) {
+        const latest = data[0];
+        setDownloadStats({ total: latest.total_downloads || 0, unique: latest.unique_downloads || 0 });
+      }
+    } catch (error) {
+      console.error('Error fetching stats:', error);
+    }
+  };
+
+  const handleDownload = async () => {
+    try {
+      await fetch('https://functions.poehali.dev/70f6b09d-3d7c-417b-8cfa-844c8bc17cd4', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ version: 'v2.5.0' })
+      });
+    } catch (error) {
+      console.error('Error tracking download:', error);
+    }
     window.open('https://mcpehub.org/engine/dlfile.php?id=48823', '_blank');
+    fetchDownloadStats();
+  };
+
+  const handleSubmitReview = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!reviewForm.comment.trim()) return;
+    
+    setIsSubmitting(true);
+    try {
+      await fetch('https://functions.poehali.dev/e6483b23-abad-4ab1-9385-92f3f56ce014', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          rating: reviewForm.rating,
+          comment: reviewForm.comment,
+          version: 'v2.5.0'
+        })
+      });
+      setReviewForm({ rating: 5, comment: '' });
+      fetchReviews();
+    } catch (error) {
+      console.error('Error submitting review:', error);
+    }
+    setIsSubmitting(false);
   };
 
   const scrollToSection = (id: string) => {
@@ -57,6 +122,9 @@ export default function Index() {
             <button onClick={() => scrollToSection('updates')} className="text-gray-700 hover:text-blue-600 transition-colors font-medium">
               Обновления
             </button>
+            <button onClick={() => scrollToSection('reviews')} className="text-gray-700 hover:text-blue-600 transition-colors font-medium">
+              Отзывы
+            </button>
             <button onClick={() => scrollToSection('support')} className="text-gray-700 hover:text-blue-600 transition-colors font-medium">
               Поддержка
             </button>
@@ -80,6 +148,9 @@ export default function Index() {
               </button>
               <button onClick={() => scrollToSection('updates')} className="text-left text-gray-700 hover:text-blue-600 transition-colors font-medium py-2">
                 Обновления
+              </button>
+              <button onClick={() => scrollToSection('reviews')} className="text-left text-gray-700 hover:text-blue-600 transition-colors font-medium py-2">
+                Отзывы
               </button>
               <button onClick={() => scrollToSection('support')} className="text-left text-gray-700 hover:text-blue-600 transition-colors font-medium py-2">
                 Поддержка
@@ -121,6 +192,16 @@ export default function Index() {
               <CardDescription className="text-base">Последняя версия v2.5.0 — 25 октября 2025</CardDescription>
             </CardHeader>
             <CardContent className="pt-6 space-y-4">
+              <div className="grid grid-cols-2 gap-4 mb-4">
+                <div className="p-4 bg-gradient-to-br from-blue-50 to-cyan-50 rounded-lg text-center">
+                  <p className="text-3xl font-bold text-blue-600">{downloadStats.total}</p>
+                  <p className="text-sm text-gray-600">Всего скачиваний</p>
+                </div>
+                <div className="p-4 bg-gradient-to-br from-cyan-50 to-blue-50 rounded-lg text-center">
+                  <p className="text-3xl font-bold text-cyan-600">{downloadStats.unique}</p>
+                  <p className="text-sm text-gray-600">Уникальных пользователей</p>
+                </div>
+              </div>
               <div className="flex items-center gap-4 p-4 bg-blue-50 rounded-lg">
                 <Icon name="Info" className="text-blue-600" />
                 <div>
@@ -358,6 +439,88 @@ export default function Index() {
                 </ul>
               </CardContent>
             </Card>
+          </div>
+        </div>
+      </section>
+
+      <section id="reviews" className="py-20 px-4">
+        <div className="container mx-auto max-w-4xl">
+          <h2 className="text-4xl font-bold text-center mb-12 text-gray-800">Отзывы пользователей</h2>
+          
+          <Card className="mb-8 border-2 border-blue-100">
+            <CardHeader className="bg-gradient-to-r from-blue-50 to-cyan-50">
+              <CardTitle>Оставить отзыв</CardTitle>
+              <CardDescription>Поделитесь своим мнением о клиенте</CardDescription>
+            </CardHeader>
+            <CardContent className="pt-6">
+              <form onSubmit={handleSubmitReview} className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium mb-2">Оценка</label>
+                  <div className="flex gap-2">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <button
+                        key={star}
+                        type="button"
+                        onClick={() => setReviewForm({ ...reviewForm, rating: star })}
+                        className="text-3xl transition-all"
+                      >
+                        {star <= reviewForm.rating ? '⭐' : '☆'}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-2">Комментарий</label>
+                  <textarea
+                    value={reviewForm.comment}
+                    onChange={(e) => setReviewForm({ ...reviewForm, comment: e.target.value })}
+                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    rows={4}
+                    placeholder="Расскажите о своём опыте использования клиента..."
+                    required
+                  />
+                </div>
+                <Button 
+                  type="submit" 
+                  disabled={isSubmitting}
+                  className="w-full bg-gradient-to-r from-blue-500 to-cyan-400 hover:from-blue-600 hover:to-cyan-500"
+                >
+                  {isSubmitting ? 'Отправка...' : 'Отправить отзыв'}
+                </Button>
+              </form>
+            </CardContent>
+          </Card>
+
+          <div className="space-y-4">
+            <h3 className="text-2xl font-bold text-gray-800 mb-4">Последние отзывы</h3>
+            {reviews.length === 0 ? (
+              <Card className="border-2 border-gray-200">
+                <CardContent className="pt-6 text-center text-gray-500">
+                  <p>Пока нет отзывов. Будьте первым!</p>
+                </CardContent>
+              </Card>
+            ) : (
+              reviews.map((review) => (
+                <Card key={review.id} className="border-2 border-blue-100">
+                  <CardContent className="pt-6">
+                    <div className="flex items-start justify-between mb-2">
+                      <div className="flex gap-1">
+                        {Array.from({ length: 5 }).map((_, i) => (
+                          <span key={i} className="text-xl">
+                            {i < review.rating ? '⭐' : '☆'}
+                          </span>
+                        ))}
+                      </div>
+                      <Badge variant="outline">{review.version}</Badge>
+                    </div>
+                    <p className="text-gray-700 mb-2">{review.comment}</p>
+                    <p className="text-sm text-gray-500">
+                      {review.username || 'Аноним'} • {new Date(review.created_at).toLocaleDateString('ru-RU')}
+                    </p>
+                  </CardContent>
+                </Card>
+              ))
+            )}
           </div>
         </div>
       </section>
