@@ -1,0 +1,19 @@
+{
+  "tests": [
+
+    {
+      "name": "Get downloads list",
+      "method": "GET",
+      "path": "/",
+      "expectedStatus": 200,
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "Get download stats",
+      "method": "GET",
+      "path": "/?stats=true",
+      "expectedStatus": 200,
+      "bodyMatcher": "partial"
+    }
+  ]
+}
