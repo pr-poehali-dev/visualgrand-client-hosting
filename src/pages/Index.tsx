@@ -177,6 +177,14 @@ export default function Index() {
             <Icon name="Download" className="mr-2" size={20} />
             Скачать клиент
           </Button>
+          
+          <div className="mt-12 max-w-5xl mx-auto">
+            <img 
+              src="https://cdn.poehali.dev/projects/b93c37fe-5a0e-412d-bbc8-717e71d22546/files/8622a0eb-3a8c-4f2a-b906-1e28fcbf8881.jpg"
+              alt="VisualGrand Client в действии - ESP и Speed модули"
+              className="rounded-2xl shadow-2xl border-4 border-blue-200"
+            />
+          </div>
         </div>
       </section>
 
